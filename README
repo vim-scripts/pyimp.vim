@@ -1,0 +1,15 @@
+This is a mirror of http://www.vim.org/scripts/script.php?script_id=304
+
+Set of functions to open a Python import statement as a file.
+This is a modification of javaimp.vim by Darren Greaves <darren@krapplets.org> http://boncey.org/vim.shtml
+Suggested stuff to add to your ~.vimrc:
+let $PYTHONSOURCEPATH="/usr/lib/python2.2/,/usr/lib/python2.2/lib,/usr/lib/python2.2/site-packages,~/python"
+map H :call OpenPythonImport($PYTHONSOURCEPATH)<CR>
+Then press H while on a import line and the file should open (you'll need the
+source files and the path to have been set already.
+
+The paths in $PYTHONSOURCEPATH should have the source packages directly
+underneath each path.  The script needs to be able to add the package to the
+path element and open a file.
+
+I still need to figure out how to load the "from blah.bleh.blih import yada" type of imports
