@@ -2,9 +2,9 @@
 " Maintained by Tom Jenkins <tjenkins@devis.com>
 " from code base of javaimp
 " Maintained by Darren Greaves <darren@krapplets.org>
-" Version 0.1
+" Version 0.2
 " Suggested stuff to add to your ~.vimrc:
-" let $PYTHONSOURCEPATH="/usr/local/python2.2/lib,/usr/local/python2.2/lib/site-packages"
+" let $PYTHONSOURCEPATH="/usr/local/python2.2,/usr/local/python2.2/lib/site-packages"
 " map H :call OpenPythonImport($PYTHONSOURCEPATH)<CR>
 " Then press H while on a import line and the file should open (you'll need the
 " source files and the path to have been set already.
@@ -20,14 +20,20 @@
 " comma-separated path passed in.
 " Goes through each element until either the file is opened or all elements were
 " tried.
-" If a package ends in "*" then opens a file browser in this directory instead.
 function! OpenPythonImport(pythonpath)
     let line = getline(".")
-    let regex = '^import\s\+\(\S\+\)$'
-    let l = matchstr(line, regex)
-    let file = substitute(l, regex, '\1', '')
+    let regex_import = '^import\s\+\(\S\+\)$'
+    let regex_from = '^from\s\+\(\S\+\)'
+    let s:l = matchstr(line, regex_import)
+    let s:f = matchstr(line, regex_from)
 
-" need to add a regex for from blah.bleh import yada -> blah/bleh    
+    if strlen(s:l)
+	let file = substitute(s:l, regex_import, '\1', '')
+    elseif strlen(s:f)
+	let file = substitute(s:f, regex_from, '\1', '')
+    else
+	let file = ''
+    endif
 
     let file = SwapDotForSlash(file)
 
